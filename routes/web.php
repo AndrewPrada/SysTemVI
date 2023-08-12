@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Status;
+use App\Models\Type;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +25,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/registro-equipo', function () {
-    return view('equipment_register');
+    $types = Type::all();
+    $status = Status::all();
+
+    return view('equipment_register')->with([
+        'types' => $types, 
+        'status' => $status
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
