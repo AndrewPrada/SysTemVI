@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Status;
+use App\Models\Type;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +25,22 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/equipment_register', function () {
+    $type = Type::all();
+    $status = Status::all();
+    $users = User::all();
+
+    return view('equipment_register')->with([
+        'type' => $type,
+        'status' => $status,
+        'users' => $users
+    ]);
+})->middleware(['auth', 'verified'])->name('equipment_register');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
